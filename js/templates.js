@@ -1,8 +1,3 @@
-// =======================================
-// STUDIO KAMU
-// TEMPLATE LIST
-// =======================================
-
 const TEMPLATES = [
 
     {
@@ -24,5 +19,15 @@ const TEMPLATES = [
 
         overlay: "assets/templates/minimal/overlay.png"
     },
-    
+
+    {
+        id: "barefoot",
+
+        name: "Barefoot",
+
+        preview: "assets/templates/barefoot/preview.jpg",
+
+        overlay: "assets/templates/barefoot/overlay.png"
+    }
+
 ];
