@@ -216,20 +216,54 @@ function render(){
 
 function drawPhotos(){
 
-    photos.forEach((photo,index)=>{
+    FRAMES.forEach((frame,index)=>{
 
-        if(!photo) return;
+        // Belum ada foto
+        if(!photos[index]){
 
-        const frame = FRAMES[index];
+            drawPlaceholder(frame);
 
-        drawCover(photo,frame);
+            drawPlaceholder({
 
-        drawCover(photo,{
-            x:frame.x+RIGHT_OFFSET,
-            y:frame.y,
-            width:frame.width,
-            height:frame.height
-        });
+                x:frame.x + RIGHT_OFFSET,
+
+                y:frame.y,
+
+                width:frame.width,
+
+                height:frame.height
+
+            });
+
+            return;
+
+        }
+
+        drawCover(
+
+            photos[index],
+
+            frame
+
+        );
+
+        drawCover(
+
+            photos[index],
+
+            {
+
+                x:frame.x + RIGHT_OFFSET,
+
+                y:frame.y,
+
+                width:frame.width,
+
+                height:frame.height
+
+            }
+
+        );
 
     });
 
@@ -260,6 +294,57 @@ function drawOverlay(){
 // =========================================
 // DRAW COVER
 // =========================================
+
+function drawPlaceholder(frame){
+
+    // Background
+    ctx.fillStyle = "#f7f7f7";
+    ctx.fillRect(frame.x, frame.y, frame.width, frame.height);
+
+    // Border putus-putus
+    ctx.strokeStyle = "#d8d8d8";
+    ctx.lineWidth = 3;
+    ctx.setLineDash([12,8]);
+
+    ctx.strokeRect(
+        frame.x,
+        frame.y,
+        frame.width,
+        frame.height
+    );
+
+    ctx.setLineDash([]);
+
+    // Ikon
+    ctx.fillStyle = "#b5b5b5";
+    ctx.textAlign = "center";
+
+    ctx.font = "bold 70px Arial";
+    ctx.fillText(
+        "＋",
+        frame.x + frame.width/2,
+        frame.y + frame.height/2 - 40
+    );
+
+    // Judul
+    ctx.fillStyle = "#666";
+    ctx.font = "bold 30px Arial";
+    ctx.fillText(
+        "Tambahkan Foto",
+        frame.x + frame.width/2,
+        frame.y + frame.height/2 + 20
+    );
+
+    // Sub Judul
+    ctx.fillStyle = "#999";
+    ctx.font = "20px Arial";
+    ctx.fillText(
+        "Ketuk untuk memilih",
+        frame.x + frame.width/2,
+        frame.y + frame.height/2 + 60
+    );
+
+}
 
 function drawCover(photo,frame){
 
