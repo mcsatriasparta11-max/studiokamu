@@ -46,24 +46,25 @@ function loadTemplates(){
 
         `;
 
-        card.onclick = ()=>{
+       card.onclick = ()=>{
 
-            // Simpan template
-            selectedTemplate = template;
+    selectedTemplate = template;
 
-            // Judul editor
-            templateTitle.innerText =
-            template.name;
+    templateTitle.innerText = template.name;
 
-            // Pindah halaman
-            homePage.style.display = "none";
+    history.pushState(
+        {page:"editor"},
+        "",
+        "#editor"
+    );
 
-            editorPage.style.display = "block";
+    homePage.style.display = "none";
 
-            // Load editor
-            loadEditor(template);
+    editorPage.style.display = "block";
 
-        };
+    loadEditor(template);
+
+};
 
         templateList.appendChild(card);
 
@@ -71,17 +72,6 @@ function loadTemplates(){
 
 }
 
-// =====================
-// BACK
-// =====================
-
-backButton.onclick = ()=>{
-
-    editorPage.style.display = "none";
-
-    homePage.style.display = "block";
-
-};
 
 // =====================
 // INIT
@@ -148,3 +138,15 @@ fullscreenButton.onclick = async ()=>{
     }
 
 };
+
+window.addEventListener("popstate", ()=>{
+
+    if(editorPage.style.display==="block"){
+
+        editorPage.style.display="none";
+
+        homePage.style.display="block";
+
+    }
+
+});
