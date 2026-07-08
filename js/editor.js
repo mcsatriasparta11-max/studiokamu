@@ -1,32 +1,18 @@
 // =========================================
 // STUDIO KAMU
-// EDITOR V3 (ANDROID OPTIMIZED)
+// EDITOR V2
 // =========================================
 
-// =========================================
-// CANVAS
-// =========================================
-
+// Canvas
 const canvas = document.getElementById("editorCanvas");
-const ctx = canvas.getContext("2d", {
-    alpha: false,
-    desynchronized: true
-});
+const ctx = canvas.getContext("2d");
 
-canvas.style.touchAction = "none";
-
-// =========================================
-// INPUT
-// =========================================
-
+// Input Foto
 const photoInput = document.getElementById("photoInput");
 
-// =========================================
-// CANVAS SIZE
-// =========================================
-
-const CANVAS_WIDTH = 1200;
-const CANVAS_HEIGHT = 1800;
+// Ukuran Canon Selphy
+const CANVAS_WIDTH = 2400;
+const CANVAS_HEIGHT = 3600;
 
 // =========================================
 // FRAME
@@ -35,22 +21,22 @@ const CANVAS_HEIGHT = 1800;
 const FRAMES = [
 
     {
-        x: 35,
-        y: 65,
-        width: 550,
-        height: 790
+        x: 70,
+        y: 130,
+        width: 1100,
+        height: 1580
     },
 
     {
-        x: 35,
-        y: 910,
-        width: 550,
-        height: 790
+        x: 70,
+        y: 1820,
+        width: 1100,
+        height: 1580
     }
 
 ];
 
-const RIGHT_OFFSET = 600;
+const RIGHT_OFFSET = 1200;
 
 // =========================================
 // DATA
@@ -60,14 +46,18 @@ let overlayImage = new Image();
 
 let photos = [];
 
+// foto yang dipilih ketika memilih gambar
 let currentPhotoIndex = null;
+
+// foto yang sedang diedit
 let activePhotoIndex = null;
 
 // =========================================
-// POINTER
+// DRAG
 // =========================================
 
 let isPointerDown = false;
+
 let isDragging = false;
 
 let dragStartX = 0;
@@ -81,40 +71,8 @@ let pinchScale = 1;
 
 const pointers = new Map();
 
+// minimal geser supaya dianggap drag
 const DRAG_THRESHOLD = 5;
-
-// =========================================
-// RENDER SCHEDULER
-// =========================================
-
-let renderPending = false;
-let needsRender = true;
-
-function scheduleRender() {
-
-    needsRender = true;
-
-    if (renderPending) return;
-
-    renderPending = true;
-
-    requestAnimationFrame(renderLoop);
-
-}
-
-function renderLoop() {
-
-    if (needsRender) {
-
-        render();
-
-        needsRender = false;
-
-    }
-
-    renderPending = false;
-
-}
 
 // =========================================
 // LOAD EDITOR
@@ -131,14 +89,14 @@ function loadEditor(template){
 
     overlayImage = new Image();
 
-    overlayImage.onload = scheduleRender;
+    overlayImage.onload = render;
 
     overlayImage.src = template.overlay;
 
 }
 
 // =========================================
-// PHOTO INPUT
+// PILIH FOTO
 // =========================================
 
 photoInput.onchange = async (e)=>{
@@ -155,22 +113,22 @@ photoInput.onchange = async (e)=>{
 
     photos[currentPhotoIndex] = {
 
-        img,
+        img: img,
 
-        offsetX:0,
-        offsetY:0,
+        offsetX: 0,
+        offsetY: 0,
 
-        scale:1,
+        scale: 1,
 
-        rotation:0
+        rotation: 0
 
     };
 
     activePhotoIndex = currentPhotoIndex;
 
-    scheduleRender();
+    render();
 
-    photoInput.value="";
+    photoInput.value = "";
 
 };
 
@@ -182,11 +140,11 @@ function isInsideFrame(x,y,frame){
 
     return (
 
-        x>=frame.x &&
-        x<=frame.x+frame.width &&
+        x >= frame.x &&
+        x <= frame.x + frame.width &&
 
-        y>=frame.y &&
-        y<=frame.y+frame.height
+        y >= frame.y &&
+        y <= frame.y + frame.height
 
     );
 
@@ -197,6 +155,7 @@ function getCanvasPoint(e){
     const rect = canvas.getBoundingClientRect();
 
     const scaleX = canvas.width / rect.width;
+
     const scaleY = canvas.height / rect.height;
 
     return{
@@ -227,10 +186,10 @@ function getFrameIndex(x,y){
 
 function getDistance(p1,p2){
 
-    const dx = p1.clientX-p2.clientX;
-    const dy = p1.clientY-p2.clientY;
+    const dx = p1.clientX - p2.clientX;
+    const dy = p1.clientY - p2.clientY;
 
-    return Math.sqrt(dx*dx+dy*dy);
+    return Math.sqrt(dx*dx + dy*dy);
 
 }
 
@@ -240,11 +199,9 @@ function getDistance(p1,p2){
 
 function render(){
 
-    ctx.setTransform(1,0,0,1,0,0);
-
     ctx.clearRect(0,0,canvas.width,canvas.height);
 
-    ctx.fillStyle="#FFFFFF";
+    ctx.fillStyle="#ffffff";
     ctx.fillRect(0,0,canvas.width,canvas.height);
 
     drawPhotos();
@@ -259,31 +216,22 @@ function render(){
 
 function drawPhotos(){
 
-    const total = photos.length;
+    photos.forEach((photo,index)=>{
 
-    for(let i=0;i<total;i++){
+        if(!photo) return;
 
-        const photo = photos[i];
-
-        if(!photo) continue;
-
-        const frame = FRAMES[i];
+        const frame = FRAMES[index];
 
         drawCover(photo,frame);
 
         drawCover(photo,{
-
             x:frame.x+RIGHT_OFFSET,
-
             y:frame.y,
-
             width:frame.width,
-
             height:frame.height
-
         });
 
-    }
+    });
 
 }
 
@@ -300,11 +248,9 @@ function drawOverlay(){
         overlayImage,
 
         0,
-
         0,
 
         CANVAS_WIDTH,
-
         CANVAS_HEIGHT
 
     );
@@ -317,42 +263,38 @@ function drawOverlay(){
 
 function drawCover(photo,frame){
 
-    const img = photo.img;
+    const img=photo.img;
 
-    if(!img) return;
+   const coverScale = Math.max(
+    frame.width / img.width,
+    frame.height / img.height
+);
 
-    const coverScale = Math.max(
+const finalScale = coverScale * photo.scale;
 
-        frame.width / img.width,
+const drawWidth = img.width * finalScale;
 
-        frame.height / img.height
+const drawHeight = img.height * finalScale;
 
-    );
+    const centerX=
 
-    const finalScale = coverScale * photo.scale;
+        frame.x+
 
-    const drawWidth = img.width * finalScale;
-
-    const drawHeight = img.height * finalScale;
-
-    const centerX =
-
-        frame.x +
-
-        frame.width/2 +
+        frame.width/2+
 
         photo.offsetX;
 
-    const centerY =
+    const centerY=
 
-        frame.y +
+        frame.y+
 
-        frame.height/2 +
+        frame.height/2+
 
         photo.offsetY;
 
     ctx.save();
 
+    // Crop sesuai frame
     ctx.beginPath();
 
     ctx.rect(
@@ -369,6 +311,7 @@ function drawCover(photo,frame){
 
     ctx.clip();
 
+    // Titik tengah frame
     ctx.translate(
 
         centerX,
@@ -377,20 +320,14 @@ function drawCover(photo,frame){
 
     );
 
-    if(photo.rotation!==0){
+    // Rotasi
+    ctx.rotate(
 
-        ctx.rotate(
+        photo.rotation*Math.PI/180
 
-            photo.rotation *
+    );
 
-            Math.PI /
-
-            180
-
-        );
-
-    }
-
+    // Gambar
     ctx.drawImage(
 
         img,
@@ -407,6 +344,7 @@ function drawCover(photo,frame){
 
     ctx.restore();
 
+    // Border editor (hanya foto aktif)
     if(photo===photos[activePhotoIndex]){
 
         ctx.save();
@@ -439,28 +377,24 @@ function drawCover(photo,frame){
 
 canvas.addEventListener("pointerdown", pointerDown);
 canvas.addEventListener("pointermove", pointerMove);
+canvas.addEventListener("wheel", wheelZoom, { passive:false });
 canvas.addEventListener("pointerup", pointerUp);
 canvas.addEventListener("pointercancel", pointerUp);
 canvas.addEventListener("pointerleave", pointerUp);
 
-canvas.addEventListener("wheel", wheelZoom, {
-    passive:false
-});
-
 function pointerDown(e){
 
-    canvas.setPointerCapture(e.pointerId);
-
-    pointers.set(e.pointerId,e);
+    pointers.set(e.pointerId, e);
 
     const p = getCanvasPoint(e);
 
-    const index = getFrameIndex(p.x,p.y);
+    const index = getFrameIndex(p.x, p.y);
 
-    if(index===-1) return;
+    if(index === -1) return;
 
     activePhotoIndex = index;
 
+    // Jika belum ada foto
     if(!photos[index]){
 
         currentPhotoIndex = index;
@@ -480,141 +414,91 @@ function pointerDown(e){
     dragOffsetX = photos[index].offsetX;
     dragOffsetY = photos[index].offsetY;
 
-    if(pointers.size===2){
+    // Simpan jarak awal pinch
+    if(pointers.size === 2){
 
-        const list=[...pointers.values()];
+        const list = [...pointers.values()];
 
-        pinchDistance = getDistance(
-            list[0],
-            list[1]
-        );
+        pinchDistance = getDistance(list[0], list[1]);
 
         pinchScale = photos[index].scale;
 
     }
 
-    scheduleRender();
+    render();
 
 }
 
 function pointerMove(e){
 
-    if(!pointers.has(e.pointerId)) return;
-
-    pointers.set(e.pointerId,e);
+    pointers.set(e.pointerId, e);
 
     const photo = photos[activePhotoIndex];
 
     if(!photo) return;
 
-    // =====================
+    // =========================
     // PINCH
-    // =====================
+    // =========================
 
-    if(pointers.size===2){
+    if(pointers.size === 2){
 
-        const list=[...pointers.values()];
+        const list = [...pointers.values()];
 
-        const distance=getDistance(
+        const distance = getDistance(list[0], list[1]);
 
-            list[0],
-            list[1]
+        photo.scale = pinchScale * (distance / pinchDistance);
 
-        );
+        photo.scale = Math.max(0.5, Math.min(5, photo.scale));
 
-        if(pinchDistance>0){
-
-            const scale =
-
-                pinchScale *
-
-                (distance/pinchDistance);
-
-            photo.scale=Math.max(
-
-                0.5,
-
-                Math.min(5,scale)
-
-            );
-
-            scheduleRender();
-
-        }
+        render();
 
         return;
 
     }
+
+    // =========================
+    // DRAG
+    // =========================
 
     if(!isPointerDown) return;
 
-    const p=getCanvasPoint(e);
+    const p = getCanvasPoint(e);
 
-    const dx=p.x-dragStartX;
-    const dy=p.y-dragStartY;
+    const dx = p.x - dragStartX;
+    const dy = p.y - dragStartY;
 
-    if(
+    if(!isDragging){
 
-        !isDragging &&
+        if(Math.abs(dx) < DRAG_THRESHOLD &&
+           Math.abs(dy) < DRAG_THRESHOLD){
+            return;
+        }
 
-        Math.abs(dx)<DRAG_THRESHOLD &&
-
-        Math.abs(dy)<DRAG_THRESHOLD
-
-    ){
-
-        return;
+        isDragging = true;
 
     }
 
-    isDragging=true;
+    photo.offsetX = dragOffsetX + dx;
+    photo.offsetY = dragOffsetY + dy;
 
-    const newX=dragOffsetX+dx;
-    const newY=dragOffsetY+dy;
-
-    // Hindari render jika posisi tidak berubah
-
-    if(
-
-        newX===photo.offsetX &&
-
-        newY===photo.offsetY
-
-    ){
-
-        return;
-
-    }
-
-    photo.offsetX=newX;
-    photo.offsetY=newY;
-
-    scheduleRender();
+    render();
 
 }
 
 function pointerUp(e){
 
-    if(canvas.hasPointerCapture(e.pointerId)){
-
-        canvas.releasePointerCapture(
-
-            e.pointerId
-
-        );
-
-    }
-
     pointers.delete(e.pointerId);
 
-    if(pointers.size<2){
+    if(pointers.size < 2){
 
-        pinchDistance=0;
+        pinchDistance = 0;
 
     }
 
-    isPointerDown=false;
-    isDragging=false;
+    isPointerDown = false;
+
+    isDragging = false;
 
 }
 
@@ -622,145 +506,33 @@ function wheelZoom(e){
 
     e.preventDefault();
 
-    if(activePhotoIndex===null) return;
+    if(activePhotoIndex === null) return;
 
-    const photo=photos[activePhotoIndex];
+    const photo = photos[activePhotoIndex];
 
     if(!photo) return;
 
-    const delta=e.deltaY<0 ? 0.05 : -0.05;
+    if(e.deltaY < 0){
 
-    photo.scale=Math.max(
+        photo.scale += 0.05;
 
-        0.5,
+    }else{
 
-        Math.min(
+        photo.scale -= 0.05;
 
-            5,
+    }
 
-            photo.scale+delta
+    // Batas zoom
+    photo.scale = Math.max(0.5, Math.min(5, photo.scale));
 
-        )
-
-    );
-
-    scheduleRender();
+    render();
 
 }
 
 // =========================================
-// DRAW COVER (OPTIMIZED)
-// =========================================
-
-function drawCover(photo, frame){
-
-    const img = photo.img;
-
-    if(!img || !img.complete) return;
-
-    // Hitung skala cover hanya sekali
-    const coverScale = Math.max(
-        frame.width / img.width,
-        frame.height / img.height
-    );
-
-    const scale = coverScale * photo.scale;
-
-    const drawWidth = img.width * scale;
-    const drawHeight = img.height * scale;
-
-    const centerX =
-        frame.x +
-        frame.width / 2 +
-        photo.offsetX;
-
-    const centerY =
-        frame.y +
-        frame.height / 2 +
-        photo.offsetY;
-
-    ctx.save();
-
-    ctx.beginPath();
-    ctx.rect(
-        frame.x,
-        frame.y,
-        frame.width,
-        frame.height
-    );
-    ctx.clip();
-
-    ctx.translate(centerX, centerY);
-
-    // Rotate hanya jika diperlukan
-    if(photo.rotation !== 0){
-        ctx.rotate(photo.rotation * Math.PI / 180);
-    }
-
-    // Image smoothing
-    ctx.imageSmoothingEnabled = true;
-    ctx.imageSmoothingQuality = "high";
-
-    ctx.drawImage(
-        img,
-        -drawWidth / 2,
-        -drawHeight / 2,
-        drawWidth,
-        drawHeight
-    );
-
-    ctx.restore();
-
-    // Border editor
-    if(photo === photos[activePhotoIndex]){
-
-        ctx.save();
-
-        ctx.strokeStyle = "#00A8FF";
-        ctx.lineWidth = 4;
-
-        ctx.strokeRect(
-            frame.x,
-            frame.y,
-            frame.width,
-            frame.height
-        );
-
-        ctx.restore();
-
-    }
-
-}
-
-// =========================================
-// RESIZE
-// =========================================
-
-window.addEventListener("resize", () => {
-
-    scheduleRender();
-
-});
-
-// =========================================
-// VISIBILITY
-// =========================================
-
-document.addEventListener("visibilitychange", () => {
-
-    if(!document.hidden){
-
-        scheduleRender();
-
-    }
-
-});
-
-// =========================================
-// EXPORT
+// EXPORT KE GLOBAL
 // =========================================
 
 window.canvas = canvas;
 window.render = render;
-window.scheduleRender = scheduleRender;
 window.loadEditor = loadEditor;
