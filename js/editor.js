@@ -11,8 +11,8 @@ const ctx = canvas.getContext("2d");
 const photoInput = document.getElementById("photoInput");
 
 // Ukuran Canon Selphy
-const CANVAS_WIDTH = 2400;
-const CANVAS_HEIGHT = 3600;
+const CANVAS_WIDTH = 1200;
+const CANVAS_HEIGHT = 1800;
 
 // =========================================
 // FRAME
@@ -21,22 +21,22 @@ const CANVAS_HEIGHT = 3600;
 const FRAMES = [
 
     {
-        x: 70,
-        y: 130,
-        width: 1100,
-        height: 1580
+        x: 35,
+        y: 65,
+        width: 550,
+        height: 790
     },
 
     {
-        x: 70,
-        y: 1820,
-        width: 1100,
-        height: 1580
+        x: 35,
+        y: 910,
+        width: 550,
+        height: 790
     }
 
 ];
 
-const RIGHT_OFFSET = 1200;
+const RIGHT_OFFSET = 600;
 
 // =========================================
 // DATA
