@@ -88,3 +88,34 @@ backButton.onclick = ()=>{
 // =====================
 
 loadTemplates();
+
+const themeButton =
+document.querySelector(".theme-toggle");
+
+const savedTheme =
+localStorage.getItem("theme");
+
+if(savedTheme==="dark"){
+
+    document.body.classList.add("dark");
+
+    themeButton.innerHTML="☀️";
+
+}
+
+themeButton.onclick=()=>{
+
+    document.body.classList.toggle("dark");
+
+    const dark =
+    document.body.classList.contains("dark");
+
+    themeButton.innerHTML =
+    dark ? "☀️" : "🌙";
+
+    localStorage.setItem(
+        "theme",
+        dark ? "dark" : "light"
+    );
+
+};
