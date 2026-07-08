@@ -119,3 +119,32 @@ themeButton.onclick=()=>{
     );
 
 };
+
+const fullscreenButton =
+document.querySelector(".fullscreen-toggle");
+
+fullscreenButton.onclick = async ()=>{
+
+    try{
+
+        if(!document.fullscreenElement){
+
+            await document.documentElement.requestFullscreen();
+
+            fullscreenButton.innerHTML = "🗗";
+
+        }else{
+
+            await document.exitFullscreen();
+
+            fullscreenButton.innerHTML = "⛶";
+
+        }
+
+    }catch(err){
+
+        console.log(err);
+
+    }
+
+};
