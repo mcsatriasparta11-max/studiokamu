@@ -16,6 +16,8 @@ body{
 
     color:#222;
 
+    -webkit-tap-highlight-color:transparent;
+
 }
 
 
@@ -85,11 +87,11 @@ body{
 
 #templateList{
 
-    display:flex;
+    display:grid;
 
-    flex-direction:column;
+    grid-template-columns:repeat(2,1fr);
 
-    gap:20px;
+    gap:16px;
 
 }
 
@@ -108,17 +110,29 @@ body{
 
     cursor:pointer;
 
-    border:3px solid transparent;
-
-    transition:.2s;
+    transition:.18s ease;
 
     box-shadow:0 5px 15px rgba(0,0,0,.08);
 
+    user-select:none;
+
+    display:flex;
+
+    flex-direction:column;
+
 }
 
-.template-card.active{
+.template-card:hover{
 
-    border-color:#2196F3;
+    transform:translateY(-2px);
+
+    box-shadow:0 10px 25px rgba(0,0,0,.12);
+
+}
+
+.template-card:active{
+
+    transform:scale(.98);
 
 }
 
@@ -126,17 +140,23 @@ body{
 
     width:100%;
 
+    aspect-ratio:3/4;
+
+    object-fit:cover;
+
     display:block;
 
 }
 
 .template-card h3{
 
-    padding:15px;
+    padding:12px;
 
     text-align:center;
 
-    font-size:18px;
+    font-size:15px;
+
+    font-weight:600;
 
 }
 
@@ -159,23 +179,13 @@ button{
 
     cursor:pointer;
 
-    margin-top:15px;
+    transition:.2s;
 
 }
 
-#startButton{
+button:active{
 
-    background:#2196F3;
-
-    color:white;
-
-}
-
-#addPhotoButton{
-
-    background:#00a152;
-
-    color:white;
+    transform:scale(.98);
 
 }
 
@@ -220,6 +230,12 @@ button{
 
     display:block;
 
+    touch-action:none;
+
+    user-select:none;
+
+    -webkit-user-select:none;
+
 }
 
 
@@ -233,6 +249,56 @@ button{
 
     flex-direction:column;
 
+    gap:15px;
+
     margin-top:20px;
+
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width:480px){
+
+    #homePage,
+    #editorPage{
+
+        padding:15px;
+
+    }
+
+    .header h1{
+
+        font-size:28px;
+
+    }
+
+    .header h2{
+
+        font-size:24px;
+
+    }
+
+}
+
+@media (max-width:480px){
+
+    #templateList{
+
+        grid-template-columns:repeat(2,1fr);
+
+        gap:12px;
+
+    }
+
+    .template-card h3{
+
+        font-size:14px;
+
+        padding:10px;
+
+    }
 
 }

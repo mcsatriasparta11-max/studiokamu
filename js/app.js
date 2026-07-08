@@ -9,15 +9,20 @@ let selectedTemplate = null;
 // ELEMENT
 // =====================
 
-const homePage = document.getElementById("homePage");
-const editorPage = document.getElementById("editorPage");
+const homePage =
+document.getElementById("homePage");
 
-const templateList = document.getElementById("templateList");
+const editorPage =
+document.getElementById("editorPage");
 
-const startButton = document.getElementById("startButton");
-const backButton = document.getElementById("backButton");
+const templateList =
+document.getElementById("templateList");
 
-const templateTitle = document.getElementById("templateTitle");
+const backButton =
+document.getElementById("backButton");
+
+const templateTitle =
+document.getElementById("templateTitle");
 
 // =====================
 // LOAD TEMPLATE
@@ -25,15 +30,15 @@ const templateTitle = document.getElementById("templateTitle");
 
 function loadTemplates(){
 
-    templateList.innerHTML="";
+    templateList.innerHTML = "";
 
     TEMPLATES.forEach(template=>{
 
-        const card=document.createElement("div");
+        const card = document.createElement("div");
 
-        card.className="template-card";
+        card.className = "template-card";
 
-        card.innerHTML=`
+        card.innerHTML = `
 
             <img src="${template.preview}">
 
@@ -41,15 +46,22 @@ function loadTemplates(){
 
         `;
 
-        card.onclick=()=>{
+        card.onclick = ()=>{
 
-            document
-            .querySelectorAll(".template-card")
-            .forEach(item=>item.classList.remove("active"));
+            // Simpan template
+            selectedTemplate = template;
 
-            card.classList.add("active");
+            // Judul editor
+            templateTitle.innerText =
+            template.name;
 
-            selectedTemplate=template;
+            // Pindah halaman
+            homePage.style.display = "none";
+
+            editorPage.style.display = "block";
+
+            // Load editor
+            loadEditor(template);
 
         };
 
@@ -60,38 +72,14 @@ function loadTemplates(){
 }
 
 // =====================
-// START
-// =====================
-
-startButton.onclick=()=>{
-
-    if(!selectedTemplate){
-
-        alert("Silakan pilih template.");
-
-        return;
-
-    }
-
-    homePage.style.display="none";
-
-    editorPage.style.display="block";
-
-    templateTitle.innerText=selectedTemplate.name;
-
-    loadEditor(selectedTemplate);
-
-};
-
-// =====================
 // BACK
 // =====================
 
-backButton.onclick=()=>{
+backButton.onclick = ()=>{
 
-    editorPage.style.display="none";
+    editorPage.style.display = "none";
 
-    homePage.style.display="block";
+    homePage.style.display = "block";
 
 };
 
