@@ -25,4 +25,15 @@ const TEMPLATES = [
         overlay: "assets/templates/minimal/overlay.png"
     }
 
+    {
+        id: "BAREFOOT",
+
+        name: "Barefoot",
+
+        preview: "assets/templates/barefoot/preview.jpg",
+
+        overlay: "assets/templates/barefoot/overlay.png"
+    }
+
+
 ];
