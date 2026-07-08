@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Studio Kamu</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+    <!-- ===========================
+         HOME PAGE
+    ============================ -->
+
+    <section id="homePage">
+
+        <header class="header">
+
+            <h1>Studio Kamu</h1>
+
+            <p>Pilih Template Photostrip</p>
+
+        </header>
+
+        <!-- Template akan dibuat otomatis dari templates.js -->
+
+        <div id="templateList">
+
+        </div>
+
+        <button id="startButton">
+
+            Mulai Editor
+
+        </button>
+
+    </section>
+
+
+
+    <!-- ===========================
+         EDITOR PAGE
+    ============================ -->
+
+    <section id="editorPage">
+
+        <header class="header">
+
+            <button id="backButton">
+
+                ← Kembali
+
+            </button>
+
+            <h2 id="templateTitle">
+
+                Template
+
+            </h2>
+
+        </header>
+
+
+        <div class="canvas-wrapper">
+
+            <canvas id="editorCanvas">
+
+            </canvas>
+
+        </div>
+
+
+<div class="toolbar">
+
+    <button id="saveButton">
+        💾 Simpan
+    </button>
+
+</div>
+
+<input
+    type="file"
+    id="photoInput"
+    accept="image/*"
+    hidden>
+
+
+
+    <!-- ===========================
+         JAVASCRIPT
+    ============================ -->
+
+<script src="js/templates.js"></script>
+<script src="js/editor.js"></script>
+<script src="js/export.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+
+</html>
