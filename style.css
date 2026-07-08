@@ -327,7 +327,12 @@ button:active{
 
 @media (max-width:480px){
 
-    #homePage,
+    #homePage{
+
+        padding:70px 15px 15px;
+
+    }
+
     #editorPage{
 
         padding:15px;
@@ -405,38 +410,6 @@ button:active{
 .theme-toggle:hover{
 
     transform:rotate(20deg);
-
-}
-
-.fullscreen-toggle{
-
-    position:fixed;
-
-    top:18px;
-
-    left:18px;
-
-    width:46px;
-
-    height:46px;
-
-    border-radius:50%;
-
-    background:var(--card);
-
-    color:var(--text);
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-
-    cursor:pointer;
-
-    box-shadow:var(--shadow);
-
-    z-index:999;
 
 }
 
