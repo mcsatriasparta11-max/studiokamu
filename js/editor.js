@@ -18,7 +18,7 @@ const CANVAS_HEIGHT = 3600;
 // FRAME
 // =========================================
 
-const FRAMES = [
+let FRAMES = [
 
     {
         x: 70,
@@ -36,7 +36,7 @@ const FRAMES = [
 
 ];
 
-const RIGHT_OFFSET = 1200;
+const RIGHT_OFFSET = 1133;
 
 // =========================================
 // DATA
@@ -45,6 +45,8 @@ const RIGHT_OFFSET = 1200;
 let overlayImage = new Image();
 
 let photos = [];
+
+let PHOTO_COUNT = 0;
 
 // foto yang dipilih ketika memilih gambar
 let currentPhotoIndex = null;
@@ -80,13 +82,27 @@ const DRAG_THRESHOLD = 5;
 
 function loadEditor(template){
 
+    // Reset data
+    photos = [];
+    currentPhotoIndex = null;
+    activePhotoIndex = null;
+
+    // Ukuran canvas
     canvas.width = CANVAS_WIDTH;
     canvas.height = CANVAS_HEIGHT;
 
-    photos = [];
+    // Frame template
+    FRAMES = template.frames;
 
-    activePhotoIndex = null;
+    // Jumlah foto yang dibutuhkan
+    PHOTO_COUNT =
+        template.type === "single"
+            ? 1
+            : template.mirror
+                ? FRAMES.length
+                : FRAMES.length * 2;
 
+    // Load overlay
     overlayImage = new Image();
 
     overlayImage.onload = render;
@@ -170,11 +186,42 @@ function getCanvasPoint(e){
 
 function getFrameIndex(x,y){
 
+    // ==========================
+    // SINGLE
+    // ==========================
+    if(selectedTemplate.type === "single"){
+
+        return isInsideFrame(x,y,FRAMES[0]) ? 0 : -1;
+
+    }
+
+    // ==========================
+    // STRIP
+    // ==========================
     for(let i=0;i<FRAMES.length;i++){
 
+        // Frame kiri
         if(isInsideFrame(x,y,FRAMES[i])){
 
             return i;
+
+        }
+
+        // Frame kanan
+        const rightFrame={
+
+            x:FRAMES[i].x + RIGHT_OFFSET,
+            y:FRAMES[i].y,
+            width:FRAMES[i].width,
+            height:FRAMES[i].height
+
+        };
+
+        if(isInsideFrame(x,y,rightFrame)){
+
+            return selectedTemplate.mirror
+                ? i
+                : i + FRAMES.length;
 
         }
 
@@ -216,54 +263,70 @@ function render(){
 
 function drawPhotos(){
 
-    FRAMES.forEach((frame,index)=>{
+    // ===============================
+    // TEMPLATE SINGLE
+    // ===============================
+    if(selectedTemplate.type === "single"){
 
-        // Belum ada foto
-        if(!photos[index]){
+        const frame = FRAMES[0];
+
+        if(!photos[0]){
 
             drawPlaceholder(frame);
-
-            drawPlaceholder({
-
-                x:frame.x + RIGHT_OFFSET,
-
-                y:frame.y,
-
-                width:frame.width,
-
-                height:frame.height
-
-            });
 
             return;
 
         }
 
-        drawCover(
+        drawCover(photos[0], frame);
 
-            photos[index],
+        return;
 
-            frame
+    }
 
-        );
+    // ===============================
+    // TEMPLATE STRIP
+    // ===============================
+    FRAMES.forEach((frame,index)=>{
 
-        drawCover(
+        const rightFrame = {
 
-            photos[index],
+            x: frame.x + RIGHT_OFFSET,
+            y: frame.y,
+            width: frame.width,
+            height: frame.height
 
-            {
+        };
 
-                x:frame.x + RIGHT_OFFSET,
+        // ===========================
+        // KIRI
+        // ===========================
+        if(!photos[index]){
 
-                y:frame.y,
+            drawPlaceholder(frame);
 
-                width:frame.width,
+        }else{
 
-                height:frame.height
+            drawCover(photos[index], frame);
 
-            }
+        }
 
-        );
+        // ===========================
+        // KANAN
+        // ===========================
+        const rightIndex = selectedTemplate.mirror
+            ? index
+            : index + FRAMES.length;
+
+        if(!photos[rightIndex]){
+
+            drawPlaceholder(rightFrame);
+
+        }else{
+
+            drawCover(photos[rightIndex], rightFrame);
+
+        }
 
     });
 
@@ -478,6 +541,7 @@ function pointerDown(e){
     if(index === -1) return;
 
     activePhotoIndex = index;
+    currentPhotoIndex = index;
 
     // Jika belum ada foto
     if(!photos[index]){
@@ -496,8 +560,8 @@ function pointerDown(e){
     dragStartX = p.x;
     dragStartY = p.y;
 
-    dragOffsetX = photos[index].offsetX;
-    dragOffsetY = photos[index].offsetY;
+    dragOffsetX = photos[activePhotoIndex].offsetX;
+    dragOffsetY = photos[activePhotoIndex].offsetY;
 
     // Simpan jarak awal pinch
     if(pointers.size === 2){
@@ -506,7 +570,7 @@ function pointerDown(e){
 
         pinchDistance = getDistance(list[0], list[1]);
 
-        pinchScale = photos[index].scale;
+        pinchScale = photos[activePhotoIndex].scale;
 
     }
 
