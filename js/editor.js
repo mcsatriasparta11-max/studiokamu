@@ -54,6 +54,9 @@ let currentPhotoIndex = null;
 // foto yang sedang diedit
 let activePhotoIndex = null;
 
+let lastTapTime = 0;
+let lastTapIndex = -1;
+
 // =========================================
 // DRAG
 // =========================================
@@ -542,6 +545,25 @@ function pointerDown(e){
 
     activePhotoIndex = index;
     currentPhotoIndex = index;
+
+    const now = Date.now();
+
+if(
+    lastTapIndex === index &&
+    now - lastTapTime < 300
+){
+
+    photoInput.click();
+
+    lastTapTime = 0;
+    lastTapIndex = -1;
+
+    return;
+
+}
+
+lastTapTime = now;
+lastTapIndex = index;
 
     // Jika belum ada foto
     if(!photos[index]){
