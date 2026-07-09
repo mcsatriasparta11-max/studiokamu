@@ -139,6 +139,16 @@ fullscreenButton.onclick = async ()=>{
 
 };
 
+    // =====================
+// TOMBOL KEMBALI
+// =====================
+
+backButton.onclick = () => {
+
+    history.back();
+
+};
+
 window.addEventListener("popstate", ()=>{
 
     if(editorPage.style.display==="block"){

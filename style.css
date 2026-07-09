@@ -268,8 +268,6 @@ button:active{
 
     color:white;
 
-    margin-bottom:15px;
-
 }
 
 
@@ -312,11 +310,15 @@ button:active{
 
     display:flex;
 
-    flex-direction:column;
-
-    gap:15px;
+    gap:12px;
 
     margin-top:20px;
+
+}
+
+.toolbar button{
+
+    flex:1;
 
 }
 
