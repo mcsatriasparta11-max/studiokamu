@@ -738,3 +738,43 @@ button:active{
     z-index:-1;
 
 }
+
+/* =========================================
+   LANDING BUTTON
+========================================= */
+
+#startButton{
+
+    width:180px;
+
+    max-width:90%;
+
+    display:block;
+
+    margin:28px auto;
+
+    background:#ff9800;
+
+    color:#fff;
+
+    font-size:18px;
+
+    font-weight:bold;
+
+    border-radius:16px;
+
+    box-shadow:0 8px 25px rgba(255,152,0,.35);
+
+}
+
+#startButton:hover{
+
+    transform:translateY(-2px);
+
+}
+
+#startButton:active{
+
+    transform:scale(.98);
+
+}
