@@ -46,11 +46,47 @@ function loadTemplates(){
 
         card.innerHTML = `
 
-            <img src="${template.preview}">
+    <div class="template-image">
 
-            <h3>${template.name}</h3>
+        <img src="${template.preview}">
 
-        `;
+        <div class="template-badge">
+
+            ${template.type.toUpperCase()}
+
+        </div>
+
+    </div>
+
+    <div class="template-info">
+
+        <h3>${template.name}</h3>
+
+        <p>
+
+    ${template.type === "single"
+
+        ? `📷 1 Foto`
+
+        : template.mirror
+
+            ? `📷 ${template.frames.length} Foto (Mirror)`
+
+            : `📷 ${template.frames.length * 2} Foto`
+
+    }
+
+</p>
+
+        <span class="use-template">
+
+            Gunakan →
+
+        </span>
+
+    </div>
+
+`;
 
        card.onclick = ()=>{
 

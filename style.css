@@ -126,10 +126,13 @@ body{
 ========================================= */
 
 #templateList{
-    display:grid;
-    grid-template-columns:repeat(2,minmax(0,1fr));
-    gap:12px;
-    width:100%;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:20px;
+
 }
 
 /* =========================================
@@ -138,11 +141,13 @@ body{
 
 .template-card{
 
-    position:relative;
+    background:rgba(255,255,255,.10);
 
-    background:var(--card);
+    backdrop-filter:blur(18px);
 
-    border-radius:18px;
+    border:1px solid rgba(255,255,255,.15);
+
+    border-radius:22px;
 
     overflow:hidden;
 
@@ -150,78 +155,97 @@ body{
 
     transition:.25s;
 
-    box-shadow:var(--shadow);
-
-    user-select:none;
+    box-shadow:0 10px 35px rgba(0,0,0,.25);
 
 }
 
 .template-card:hover{
 
-    transform:translateY(-4px);
+    transform:translateY(-6px);
 
-    box-shadow:0 12px 30px rgba(0,0,0,.18);
-
-}
-
-.template-card:active{
-
-    transform:scale(.98);
+    box-shadow:0 20px 45px rgba(0,0,0,.35);
 
 }
 
-/* Preview Template */
+.template-image{
 
-.template-card img{
+    position:relative;
+
+    overflow:hidden;
+
+}
+
+.template-image img{
 
     width:100%;
 
-    height:auto;
-
     display:block;
 
-    object-fit:contain;
-
-    transition:transform .35s ease;
+    transition:.35s;
 
 }
 
-.template-card:hover img{
+.template-card:hover .template-image img{
 
-    transform:scale(1.03);
+    transform:scale(1.05);
 
 }
 
-/* Nama Template */
-
-.template-card h3{
+.template-badge{
 
     position:absolute;
 
-    left:0;
+    top:12px;
 
-    right:0;
+    left:12px;
 
-    bottom:0;
+    padding:6px 12px;
 
-    margin:0;
+    border-radius:30px;
 
-    padding:30px 12px 12px;
+    background:#ff9800;
 
     color:#fff;
 
-    font-size:16px;
+    font-size:12px;
 
-    font-weight:700;
+    font-weight:bold;
 
-    text-shadow:0 2px 6px rgba(0,0,0,.8);
+}
 
-    background:linear-gradient(
-        to top,
-        rgba(0,0,0,.80),
-        rgba(0,0,0,.35),
-        transparent
-    );
+.template-info{
+
+    padding:18px;
+
+}
+
+.template-info h3{
+
+    color:#fff;
+
+    font-size:20px;
+
+    margin-bottom:8px;
+
+}
+
+.template-info p{
+
+    color:rgba(255,255,255,.75);
+
+    font-size:14px;
+
+    margin-bottom:18px;
+
+}
+
+.use-template{
+
+    color:#ff9800;
+
+    font-weight:bold;
+
+    font-size:15px;
 
 }
 
