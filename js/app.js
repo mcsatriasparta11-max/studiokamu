@@ -24,6 +24,12 @@ document.getElementById("backButton");
 const templateTitle =
 document.getElementById("templateTitle");
 
+const landingPage =
+document.getElementById("landingPage");
+
+const startButton =
+document.getElementById("startButton");
+
 // =====================
 // LOAD TEMPLATE
 // =====================
@@ -78,6 +84,22 @@ function loadTemplates(){
 // =====================
 
 loadTemplates();
+
+homePage.style.display = "none";
+
+startButton.onclick = ()=>{
+
+    landingPage.classList.add("hide");
+
+    setTimeout(()=>{
+
+        landingPage.style.display = "none";
+
+        homePage.style.display = "block";
+
+    },400);
+
+};
 
 const themeButton =
 document.querySelector(".theme-toggle");

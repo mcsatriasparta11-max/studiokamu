@@ -468,3 +468,252 @@ button:active{
     transform:scale(.95);
 
 }
+
+/* =========================================
+   LANDING PAGE
+========================================= */
+
+#landingPage{
+
+    position:fixed;
+
+    inset:0;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    overflow:hidden;
+
+    z-index:100;
+
+}
+
+/* Konten */
+
+.landing-content{
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;      /* Tengah horizontal */
+
+    justify-content:center;  /* Tengah vertikal */
+
+    text-align:center;
+
+    min-height:100vh;
+
+}
+
+/* Logo */
+
+.landing-logo{
+
+    width:720px;
+    height:auto;
+
+    display:block;
+
+    margin:0 auto 25px;
+
+}
+
+/* Judul */
+
+.landing-title{
+
+    color:#fff;
+
+    font-size:42px;
+
+    font-weight:800;
+
+    letter-spacing:2px;
+
+    margin-bottom:12px;
+
+}
+
+.orange{
+
+    color:#ff9800;
+
+}
+
+/* Subtitle */
+
+.landing-subtitle{
+
+    color:rgba(255,255,255,.8);
+
+    font-size:18px;
+
+    margin-bottom:45px;
+
+}
+
+/* Tombol Mulai */
+
+#startButton{
+
+    width:100%;
+
+    padding:18px;
+
+    border:none;
+
+    border-radius:18px;
+
+    font-size:18px;
+
+    font-weight:bold;
+
+    color:#fff;
+
+    cursor:pointer;
+
+    background:linear-gradient(
+        135deg,
+        #ff9800,
+        #ff6a00
+    );
+
+    box-shadow:0 10px 25px rgba(255,120,0,.35);
+
+    transition:.25s;
+
+}
+
+#startButton:hover{
+
+    transform:translateY(-2px);
+
+}
+
+#startButton:active{
+
+    transform:scale(.98);
+
+}
+
+/* Menu */
+
+.landing-menu{
+
+    margin-top:22px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:14px;
+
+}
+
+.landing-menu button{
+
+    background:rgba(255,255,255,.12);
+
+    backdrop-filter:blur(14px);
+
+    color:#fff;
+
+    border:1px solid rgba(255,255,255,.15);
+
+    border-radius:16px;
+
+    padding:16px;
+
+    font-size:16px;
+
+}
+
+/* Footer */
+
+.landing-footer{
+
+    margin-top:55px;
+
+}
+
+.landing-footer p{
+
+    color:#ddd;
+
+    margin-bottom:8px;
+
+    font-size:15px;
+
+}
+
+.landing-footer span{
+
+    color:#888;
+
+    font-size:13px;
+
+}
+
+/* =========================================
+   LANDING ANIMATION
+========================================= */
+
+#landingPage{
+
+    opacity:1;
+
+    visibility:visible;
+
+    transition:
+        opacity .4s ease,
+        visibility .4s ease;
+
+}
+
+#landingPage.hide{
+
+    opacity:0;
+
+    visibility:hidden;
+
+}
+
+/* =========================================
+   GLOBAL BACKGROUND
+========================================= */
+
+.app-background{
+
+    position:fixed;
+
+    inset:0;
+
+    background:url("assets/background/landing.jpg");
+
+    background-size:cover;
+
+    background-position:center;
+
+    transform:scale(1.08);
+
+    filter:blur(10px);
+
+    z-index:-2;
+
+}
+
+.app-overlay{
+
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(0,0,0,.45);
+
+    z-index:-1;
+
+}
