@@ -721,7 +721,7 @@ button:active{
 
     transform:scale(1.08);
 
-    filter:blur(10px);
+    filter:blur(3px);
 
     z-index:-2;
 
