@@ -123,7 +123,21 @@ loadTemplates();
 
 homePage.style.display = "none";
 
-startButton.onclick = ()=>{
+startButton.onclick = async ()=>{
+
+    try{
+
+        if(!document.fullscreenElement){
+
+            await document.documentElement.requestFullscreen();
+
+        }
+
+    }catch(err){
+
+        console.log(err);
+
+    }
 
     landingPage.classList.add("hide");
 
@@ -165,35 +179,6 @@ themeButton.onclick=()=>{
         "theme",
         dark ? "dark" : "light"
     );
-
-};
-
-const fullscreenButton =
-document.querySelector(".fullscreen-toggle");
-
-fullscreenButton.onclick = async ()=>{
-
-    try{
-
-        if(!document.fullscreenElement){
-
-            await document.documentElement.requestFullscreen();
-
-            fullscreenButton.innerHTML = "🗗";
-
-        }else{
-
-            await document.exitFullscreen();
-
-            fullscreenButton.innerHTML = "⛶";
-
-        }
-
-    }catch(err){
-
-        console.log(err);
-
-    }
 
 };
 
