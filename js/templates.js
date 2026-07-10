@@ -76,7 +76,7 @@ const TEMPLATES = [
 
     name: "KOLASE 6",
 
-    type: "strip",
+    type: "single",
 
     mirror: false,
 
@@ -115,7 +115,7 @@ const TEMPLATES = [
 
     name: "KOLASE 4",
 
-    type: "strip",
+    type: "single",
 
     mirror: false,
 
